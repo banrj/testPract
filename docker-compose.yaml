@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db_app
+    env_file:
+      - ../fastApiProject/.env-prod
+    volumes:
+    - ./data:/var/lib/postgresql/data
+
+
+  app:
+    build:
+      context: ../fastApiProject
+    container_name: fastapi_app
+    command: ['/fastapi_app/docker/run.sh']
+    env_file:
+      - ../fastApiProject/.env-prod
+    ports:
+      - 9999:8080
+    depends_on:
+      - db
+
