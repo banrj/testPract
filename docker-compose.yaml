@@ -5,20 +5,24 @@ services:
     image: postgres:latest
     container_name: db_app
     env_file:
-      - ../fastApiProject/.env-prod
+      - .env
     volumes:
-    - ./data:/var/lib/postgresql/data
-
+      - db_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
 
   app:
     build:
-      context: ../fastApiProject
+      context: .
     container_name: fastapi_app
     command: ['/fastapi_app/docker/run.sh']
     env_file:
-      - ../fastApiProject/.env-prod
+      - .env
     ports:
-      - 9999:8080
+      - 9999:8000
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
+volumes:
+  db_volume:
