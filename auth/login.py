@@ -54,7 +54,7 @@ async def login_for_access_token(
     return {'access_token': access_token, 'token_type': 'bearer'}
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/login/with_token')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/login/token')
 
 
 async def get_current_user_from_token(
